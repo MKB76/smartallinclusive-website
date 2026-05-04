@@ -162,6 +162,43 @@
   .roi-highlight-box .big { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; background:linear-gradient(135deg,var(--coral),#F07A5A); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
   .roi-highlight-box .small { font-size:0.82rem; color:var(--muted); margin-top:4px; }
 
+  /* CALCULATOR */
+  .calc-section { padding:100px 40px; background:var(--cream); }
+  .calc-inner { max-width:1200px; margin:0 auto; }
+  .calc-tabs { display:flex; gap:12px; margin-bottom:36px; flex-wrap:wrap; }
+  .calc-tab { background:white; border:1.5px solid var(--border); border-radius:100px; padding:12px 28px; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:500; cursor:pointer; color:var(--muted); transition:all .3s; }
+  .calc-tab.active { background:linear-gradient(135deg,var(--teal),var(--sage)); color:white; border-color:var(--teal); box-shadow:0 4px 15px rgba(61,191,184,0.3); }
+  .calc-tab:hover:not(.active) { border-color:var(--teal); color:var(--teal); }
+  .calc-panel { display:none; }
+  .calc-panel.active { display:block; }
+  .calc-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+  .calc-inputs { background:white; border-radius:24px; padding:36px; border:1.5px solid var(--border); }
+  .calc-input-group { margin-bottom:24px; }
+  .calc-input-group label { display:block; font-size:0.83rem; color:var(--text); margin-bottom:10px; font-weight:500; }
+  .slider-row { display:flex; align-items:center; gap:16px; }
+  .slider-row input[type=range] { flex:1; -webkit-appearance:none; height:6px; border-radius:100px; background:var(--teal-light); outline:none; border:none; }
+  .slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg,var(--teal),var(--sage)); cursor:pointer; box-shadow:0 2px 8px rgba(61,191,184,0.4); }
+  .slider-val { min-width:60px; text-align:right; font-family:'Playfair Display',serif; font-weight:700; color:var(--teal); font-size:1rem; }
+  .calc-results { display:flex; flex-direction:column; gap:14px; }
+  .result-card { background:white; border:1.5px solid var(--border); border-radius:18px; padding:20px 24px; }
+  .result-card.result-highlight { background:linear-gradient(135deg,var(--teal-light),var(--mint-light)); border-color:var(--teal-mid); }
+  .result-card.result-good { background:linear-gradient(135deg,#E8F5E9,#F1F8E9); border-color:#A5D6A7; }
+  .result-card.result-bad { background:#FFF3E0; border-color:#FFCC80; }
+  .result-card.result-roi { background:linear-gradient(135deg,var(--coral-light),#FFF0ED); border-color:var(--coral-mid); }
+  .result-label { font-size:0.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; font-weight:500; }
+  .result-value { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--dark); }
+  .result-card.result-good .result-value { color:#2E7D32; }
+  .result-card.result-bad .result-value { color:#E65100; }
+  .result-card.result-roi .result-value { background:linear-gradient(135deg,var(--coral),#F07A5A); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .result-sub { font-size:0.75rem; color:var(--muted); margin-top:4px; }
+
+  @media(max-width:768px){
+    .calc-section{padding:60px 20px;}
+    .calc-grid{grid-template-columns:1fr;}
+    .calc-tabs{gap:8px;}
+    .calc-tab{padding:10px 18px;font-size:0.82rem;}
+  }
+
   /* CONTACT – light with teal accents */
   .contact { background:linear-gradient(135deg,var(--mint-light),var(--teal-light)); padding:100px 40px; position:relative; overflow:hidden; border-top:1px solid var(--teal-mid); }
   .contact::before { content:''; position:absolute; top:-150px; right:-150px; width:500px; height:500px; background:rgba(61,191,184,0.1); border-radius:50%; }
@@ -220,6 +257,7 @@
       <button class="lang-btn active" onclick="setLang('en')">EN</button>
       <button class="lang-btn" onclick="setLang('tr')">TR</button>
     </div>
+    <a href="#calculator" class="btn-secondary" style="padding:10px 20px;font-size:0.9rem;" data-i18n="calc_tab1">🍽️ ROI Calculator</a>
     <a href="#contact" class="nav-cta" data-i18n="nav_cta">Request Demo</a>
   </div>
 </nav>
@@ -367,6 +405,224 @@
   </div>
 </section>
 
+<!-- ROI CALCULATOR SECTION -->
+<section class="calc-section" id="calculator">
+  <div class="calc-inner">
+    <div class="section-label" data-i18n="calc_label">ROI Calculator</div>
+    <h2 class="section-title" data-i18n="calc_title">Calculate Your Hotel's ROI</h2>
+    <p class="modules-subtitle" data-i18n="calc_subtitle">Enter your hotel's numbers and see the real impact in seconds.</p>
+
+    <div class="calc-tabs">
+      <button class="calc-tab active" onclick="switchCalc('kitchen')" data-i18n="calc_tab1">🍽️ Kitchen ROI</button>
+      <button class="calc-tab" onclick="switchCalc('revpar')" data-i18n="calc_tab2">📈 RevPAR Uplift</button>
+      <button class="calc-tab" onclick="switchCalc('provider')" data-i18n="calc_tab3">🤝 Provider ROI</button>
+    </div>
+
+    <!-- KITCHEN CALCULATOR -->
+    <div class="calc-panel active" id="calc-kitchen">
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <div class="calc-input-group">
+            <label data-i18n="ck_rooms">Number of Rooms</label>
+            <div class="slider-row">
+              <input type="range" min="50" max="3000" value="500" step="50" oninput="calcKitchen()" id="ck_rooms">
+              <span class="slider-val" id="ck_rooms_val">500</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="ck_guests">Guests per Room</label>
+            <div class="slider-row">
+              <input type="range" min="1" max="4" value="2" step="0.5" oninput="calcKitchen()" id="ck_guests">
+              <span class="slider-val" id="ck_guests_val">2</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="ck_cost">Food Cost per Guest/Day (€)</label>
+            <div class="slider-row">
+              <input type="range" min="5" max="30" value="10" step="1" oninput="calcKitchen()" id="ck_cost">
+              <span class="slider-val" id="ck_cost_val">10</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="ck_waste">Current Food Waste (%)</label>
+            <div class="slider-row">
+              <input type="range" min="20" max="60" value="40" step="5" oninput="calcKitchen()" id="ck_waste">
+              <span class="slider-val" id="ck_waste_val">40%</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="ck_occ">Occupancy (%)</label>
+            <div class="slider-row">
+              <input type="range" min="30" max="100" value="75" step="5" oninput="calcKitchen()" id="ck_occ">
+              <span class="slider-val" id="ck_occ_val">75%</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="ck_months">Season Months</label>
+            <div class="slider-row">
+              <input type="range" min="1" max="12" value="9" step="1" oninput="calcKitchen()" id="ck_months">
+              <span class="slider-val" id="ck_months_val">9</span>
+            </div>
+          </div>
+        </div>
+        <div class="calc-results" id="kitchen-results">
+          <div class="result-card result-highlight">
+            <div class="result-label" data-i18n="ck_r1">Annual Food Cost</div>
+            <div class="result-value" id="ck_total_cost">€0</div>
+          </div>
+          <div class="result-card result-bad">
+            <div class="result-label" data-i18n="ck_r2">Current Waste / Year</div>
+            <div class="result-value" id="ck_waste_cost">€0</div>
+          </div>
+          <div class="result-card result-good">
+            <div class="result-label" data-i18n="ck_r3">Savings with Smart Kitchen</div>
+            <div class="result-value" id="ck_saving">€0</div>
+            <div class="result-sub">30% waste reduction</div>
+          </div>
+          <div class="result-card result-roi">
+            <div class="result-label">ROI</div>
+            <div class="result-value" id="ck_roi">0%</div>
+            <div class="result-sub" data-i18n="ck_roi_sub">vs. software cost</div>
+          </div>
+          <a href="#contact" class="btn-primary" style="width:100%;text-align:center;margin-top:8px;" data-i18n="calc_cta">Request Demo Now →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVPAR CALCULATOR -->
+    <div class="calc-panel" id="calc-revpar">
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <div class="calc-input-group">
+            <label data-i18n="rv_rooms">Number of Rooms</label>
+            <div class="slider-row">
+              <input type="range" min="50" max="3000" value="500" step="50" oninput="calcRevpar()" id="rv_rooms">
+              <span class="slider-val" id="rv_rooms_val">500</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="rv_adr">Current ADR – Average Daily Rate (€)</label>
+            <div class="slider-row">
+              <input type="range" min="50" max="400" value="120" step="5" oninput="calcRevpar()" id="rv_adr">
+              <span class="slider-val" id="rv_adr_val">€120</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="rv_occ">Current Occupancy (%)</label>
+            <div class="slider-row">
+              <input type="range" min="30" max="100" value="70" step="5" oninput="calcRevpar()" id="rv_occ">
+              <span class="slider-val" id="rv_occ_val">70%</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="rv_adr_inc">ADR Increase through better reviews (%)</label>
+            <div class="slider-row">
+              <input type="range" min="1" max="10" value="3" step="0.5" oninput="calcRevpar()" id="rv_adr_inc">
+              <span class="slider-val" id="rv_adr_inc_val">3%</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="rv_occ_inc">Occupancy Increase through referrals (%)</label>
+            <div class="slider-row">
+              <input type="range" min="1" max="10" value="2" step="0.5" oninput="calcRevpar()" id="rv_occ_inc">
+              <span class="slider-val" id="rv_occ_inc_val">2%</span>
+            </div>
+          </div>
+        </div>
+        <div class="calc-results" id="revpar-results">
+          <div class="result-card">
+            <div class="result-label" data-i18n="rv_r1">Current RevPAR</div>
+            <div class="result-value" id="rv_current">€0</div>
+          </div>
+          <div class="result-card result-highlight">
+            <div class="result-label" data-i18n="rv_r2">New RevPAR with Smart All-Inclusive</div>
+            <div class="result-value" id="rv_new">€0</div>
+          </div>
+          <div class="result-card result-good">
+            <div class="result-label" data-i18n="rv_r3">Additional Revenue / Year</div>
+            <div class="result-value" id="rv_uplift">€0</div>
+          </div>
+          <div class="result-card result-roi">
+            <div class="result-label" data-i18n="rv_r4">Additional Revenue / Month</div>
+            <div class="result-value" id="rv_monthly">€0</div>
+          </div>
+          <a href="#contact" class="btn-primary" style="width:100%;text-align:center;margin-top:8px;" data-i18n="calc_cta">Request Demo Now →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROVIDER CALCULATOR -->
+    <div class="calc-panel" id="calc-provider">
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <div class="calc-input-group">
+            <label data-i18n="pv_rooms">Number of Rooms</label>
+            <div class="slider-row">
+              <input type="range" min="50" max="3000" value="500" step="50" oninput="calcProvider()" id="pv_rooms">
+              <span class="slider-val" id="pv_rooms_val">500</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="pv_occ">Occupancy (%)</label>
+            <div class="slider-row">
+              <input type="range" min="30" max="100" value="75" step="5" oninput="calcProvider()" id="pv_occ">
+              <span class="slider-val" id="pv_occ_val">75%</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="pv_months">Season Months</label>
+            <div class="slider-row">
+              <input type="range" min="1" max="12" value="7" step="1" oninput="calcProvider()" id="pv_months">
+              <span class="slider-val" id="pv_months_val">7</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="pv_rate">App Usage Rate – Guests booking via App (%)</label>
+            <div class="slider-row">
+              <input type="range" min="10" max="80" value="40" step="5" oninput="calcProvider()" id="pv_rate">
+              <span class="slider-val" id="pv_rate_val">40%</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="pv_spend">Avg. Spend per Booking (€)</label>
+            <div class="slider-row">
+              <input type="range" min="10" max="100" value="35" step="5" oninput="calcProvider()" id="pv_spend">
+              <span class="slider-val" id="pv_spend_val">€35</span>
+            </div>
+          </div>
+          <div class="calc-input-group">
+            <label data-i18n="pv_commission">Avg. Commission Rate (%)</label>
+            <div class="slider-row">
+              <input type="range" min="5" max="25" value="15" step="1" oninput="calcProvider()" id="pv_commission">
+              <span class="slider-val" id="pv_commission_val">15%</span>
+            </div>
+          </div>
+        </div>
+        <div class="calc-results" id="provider-results">
+          <div class="result-card">
+            <div class="result-label" data-i18n="pv_r1">Daily App Users</div>
+            <div class="result-value" id="pv_users">0</div>
+          </div>
+          <div class="result-card result-highlight">
+            <div class="result-label" data-i18n="pv_r2">Revenue / Month</div>
+            <div class="result-value" id="pv_monthly">€0</div>
+          </div>
+          <div class="result-card result-good">
+            <div class="result-label" data-i18n="pv_r3">Total Season Revenue</div>
+            <div class="result-value" id="pv_season">€0</div>
+          </div>
+          <div class="result-card result-roi">
+            <div class="result-label" data-i18n="pv_r4">Net Commission Profit / Season</div>
+            <div class="result-value" id="pv_net">€0</div>
+          </div>
+          <a href="#contact" class="btn-primary" style="width:100%;text-align:center;margin-top:8px;" data-i18n="calc_cta">Request Demo Now →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section class="contact" id="contact">
   <div class="contact-inner">
     <div class="section-label" data-i18n="contact_label">Contact</div>
@@ -421,12 +677,106 @@
 
 <script>
 const T={
-  de:{nav_cta:"Demo anfragen",hero_badge:"Für All-Inclusive Hotels",hero_h1:"Weniger Food Waste.<br><em>Mehr Umsatz.</em><br>Zufriedenere Gäste.",hero_p:"Die intelligente SaaS-Plattform für All-Inclusive Hotels. Reduzieren Sie Food Waste um bis zu 30%, steigern Sie den Umsatz und begeistern Sie Ihre Gäste.",hero_cta1:"Kostenlose Demo →",hero_cta2:"Mehr erfahren",card_label:"Jährliche Einsparung",card_sub:"weniger Food Waste – bei 500 Zimmern",ms1:"ROI für Hotels",ms2:"Cloud-Plattform",ms3:"Module",ms4:"Digital",stat1:"weniger Food Waste",stat2:"Ø ROI",stat3:"smarte Module",stat4:"integrierte Module",mod_label:"Unsere Module",mod_title:"Ein System. Drei Module. Maximale Effizienz.",mod_subtitle:"Jedes Modul einzeln buchbar – oder kombiniert für maximalen Effekt.",mod1_tag:"Kernmodul",mod1_p:"Intelligente Vorbestellungen und präzise Mengenplanung reduzieren Überproduktion und Food Waste erheblich.",mod1_saving:"Food Waste Reduktion",mod1_f1:"Digitale Vorbestellungen",mod1_f2:"Wochenmenü-Planung",mod1_f3:"Intelligente Einkaufslisten",mod1_f4:"Rezeptverwaltung",mod2_tag:"Einzeln / Zusatz",mod2_p:"Schluss mit Handtuch-Reservierungen. Digitale Liegenverteilung – fair und premium-buchbar.",mod2_saving:"Gästezufriedenheit",mod2_f1:"Digitale Warteschlange",mod2_f2:"QR-Code Check-in",mod2_f3:"Premium-Bereich Buchungen",mod2_f4:"Echtzeit-Belegung",mod3_tag:"Einzeln / Zusatz",mod3_p:"Externe Services digital integrieren und an jeder Buchung mitverdienen.",mod3_saving:"Neue Einnahmequellen",mod3_f1:"Anbieter-Management",mod3_f2:"Auto. Provisionen",mod3_f3:"Zentrale Buchungen",mod3_f4:"Bonuspunkte-System",mod_cta:"Demo anfragen",mod_combo:"Alle drei Module kombinieren für maximalen ROI – oder einfach mit einem starten.",mod_combo_cta:"Komplett-Paket anfragen →",roi_label:"Return on Investment",roi_title:"Die Zahlen sprechen für sich.",roi_example:"Beispiel – 500 Zimmer Hotel",roi_r1:"Gäste täglich",roi_r2:"Food Budget / Jahr",roi_r3:"Einsparung Food Waste",roi_h3:"Für jeden investierten Euro erhalten Sie bis zu 28€ zurück.",roi_p1:"Smart All-Inclusive zahlt sich bereits im ersten Monat aus.",roi_p2:"Dazu kommen neue Einnahmen durch Premium-Liegen und Provider-Provisionen.",roi_be:"Break-Even",roi_be_sub:"bereits ab dem ersten Monat nach Go-Live",contact_label:"Kontakt",contact_title:"Jetzt Demo anfragen",contact_sub:"Kostenlos und unverbindlich – wir melden uns innerhalb von 24 Stunden.",f_hotel:"Hotelname *",f_hotel_ph:"Grand Resort Hotel",f_contact:"Ansprechpartner",f_contact_ph:"Max Mustermann",f_email:"E-Mail *",f_rooms:"Anzahl Zimmer",f_interest:"Interesse an",f_select:"Modul auswählen...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Komplett-Paket",f_msg:"Nachricht",f_msg_ph:"Ich möchte mehr erfahren...",f_submit:"Demo anfragen →",f_success:"✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden."},
-  en:{nav_cta:"Request Demo",hero_badge:"For All-Inclusive Hotels",hero_h1:"Less Food Waste.<br><em>More Revenue.</em><br>Happier Guests.",hero_p:"The intelligent SaaS platform for all-inclusive hotels. Reduce food waste by up to 30%, increase revenue and delight your guests – all in one system.",hero_cta1:"Free Demo →",hero_cta2:"Learn more",card_label:"Annual Savings",card_sub:"less food waste – for 500 rooms",ms1:"ROI for Hotels",ms2:"Cloud platform",ms3:"Modules",ms4:"Digital",stat1:"less food waste",stat2:"avg. ROI",stat3:"smart modules",stat4:"integrated modules",mod_label:"Our Modules",mod_title:"One System. Three Modules. Maximum Efficiency.",mod_subtitle:"Each module can be booked individually or combined for maximum impact.",mod1_tag:"Core Module",mod1_p:"Smart pre-orders and precise quantity planning significantly reduce overproduction and food waste.",mod1_saving:"Food Waste Reduction",mod1_f1:"Digital pre-ordering",mod1_f2:"Weekly menu planning",mod1_f3:"Smart shopping lists",mod1_f4:"Recipe management",mod2_tag:"Standalone / Add-on",mod2_p:"No more towel reservations. Digital lounger management – fair, transparent and premium-bookable.",mod2_saving:"Guest Satisfaction",mod2_f1:"Digital queue system",mod2_f2:"QR-Code check-in",mod2_f3:"Premium area bookings",mod2_f4:"Real-time occupancy",mod3_tag:"Standalone / Add-on",mod3_p:"Integrate external services digitally and earn commission on every booking – without pushy vendors.",mod3_saving:"New Revenue Streams",mod3_f1:"Provider management",mod3_f2:"Auto commissions",mod3_f3:"Central bookings",mod3_f4:"Bonus points system",mod_cta:"Request Demo",mod_combo:"Combine all three modules for maximum ROI – or start with just one.",mod_combo_cta:"Get Full Package →",roi_label:"Return on Investment",roi_title:"The numbers speak for themselves.",roi_example:"Example – 500 room hotel",roi_r1:"Guests daily",roi_r2:"Food budget / year",roi_r3:"Food waste savings",roi_h3:"For every euro invested, you get up to €28 back.",roi_p1:"Smart All-Inclusive pays for itself in the very first month. No other hotel tool offers this return on investment.",roi_p2:"Add to that new revenue from premium loungers and provider commissions – money previously left on the table.",roi_be:"Break-Even",roi_be_sub:"from the very first month after go-live",contact_label:"Contact",contact_title:"Request a Demo Now",contact_sub:"Free and non-binding – we'll get back to you within 24 hours.",f_hotel:"Hotel name *",f_hotel_ph:"Grand Resort Hotel",f_contact:"Contact person",f_contact_ph:"John Smith",f_email:"Email *",f_rooms:"Number of rooms",f_interest:"Interested in",f_select:"Select module...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Complete Package",f_msg:"Message",f_msg_ph:"I'd like to learn more about Smart All-Inclusive...",f_submit:"Request Demo →",f_success:"✓ Thank you! We'll get back to you within 24 hours."},
-  tr:{nav_cta:"Demo Talep Et",hero_badge:"Her Şey Dahil Oteller İçin",hero_h1:"Daha Az Gıda İsrafı.<br><em>Daha Fazla Gelir.</em><br>Daha Mutlu Misafirler.",hero_p:"Her şey dahil oteller için akıllı SaaS platformu. Gıda israfını %30'a kadar azaltın, geliri artırın ve misafirlerinizi memnun edin.",hero_cta1:"Ücretsiz Demo →",hero_cta2:"Daha fazla bilgi",card_label:"Yıllık Tasarruf",card_sub:"daha az gıda israfı – 500 oda için",ms1:"ROI Oteller için",ms2:"Bulut platformu",ms3:"Modül",ms4:"Dijital",stat1:"daha az gıda israfı",stat2:"ort. ROI",stat3:"akıllı modül",stat4:"entegre modül",mod_label:"Modüllerimiz",mod_title:"Bir Sistem. Üç Modül. Maksimum Verimlilik.",mod_subtitle:"Her modül ayrı ayrı veya birlikte kullanılabilir.",mod1_tag:"Temel Modül",mod1_p:"Akıllı ön siparişler ve hassas miktar planlaması aşırı üretimi ve gıda israfını önemli ölçüde azaltır.",mod1_saving:"Gıda İsrafı Azaltma",mod1_f1:"Dijital ön siparişler",mod1_f2:"Haftalık menü planlama",mod1_f3:"Akıllı alışveriş listeleri",mod1_f4:"Tarif yönetimi",mod2_tag:"Tekil / Ek Modül",mod2_p:"Havlu rezervasyonlarına son. Dijital şezlong yönetimi – adil ve premium rezervasyon.",mod2_saving:"Misafir Memnuniyeti",mod2_f1:"Dijital kuyruk sistemi",mod2_f2:"QR Kod check-in",mod2_f3:"Premium alan rezervasyonları",mod2_f4:"Gerçek zamanlı doluluk",mod3_tag:"Tekil / Ek Modül",mod3_p:"Harici hizmetleri dijital olarak entegre edin ve her rezervasyondan komisyon kazanın.",mod3_saving:"Yeni Gelir Kaynakları",mod3_f1:"Sağlayıcı yönetimi",mod3_f2:"Otomatik komisyonlar",mod3_f3:"Merkezi rezervasyonlar",mod3_f4:"Bonus puan sistemi",mod_cta:"Demo Talep Et",mod_combo:"Maksimum ROI için üç modülü birleştirin – ya da tek bir modülle başlayın.",mod_combo_cta:"Komple Paket Talep Et →",roi_label:"Yatırım Getirisi",roi_title:"Rakamlar kendisi için konuşuyor.",roi_example:"Örnek – 500 odalı otel",roi_r1:"Günlük misafir",roi_r2:"Yıllık yemek bütçesi",roi_r3:"Gıda israfı tasarrufu",roi_h3:"Yatırılan her Euro için size 28€'ya kadar geri kazanç sağlıyoruz.",roi_p1:"Smart All-Inclusive ilk ayda kendini amorti eder.",roi_p2:"Buna ek olarak premium şezlonglar ve sağlayıcı komisyonlarından yeni gelirler elde edersiniz.",roi_be:"Başabaş Noktası",roi_be_sub:"canlıya geçişin ilk ayından itibaren",contact_label:"İletişim",contact_title:"Hemen Demo Talep Edin",contact_sub:"Ücretsiz ve bağlayıcı değil – 24 saat içinde size geri döneceğiz.",f_hotel:"Otel adı *",f_hotel_ph:"Grand Resort Hotel",f_contact:"İletişim kişisi",f_contact_ph:"Ahmet Yılmaz",f_email:"E-posta *",f_rooms:"Oda sayısı",f_interest:"İlgilenilen modül",f_select:"Modül seçin...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Komple Paket",f_msg:"Mesaj",f_msg_ph:"Daha fazla bilgi almak istiyorum...",f_submit:"Demo Talep Et →",f_success:"✓ Teşekkürler! 24 saat içinde size geri döneceğiz."}
+  de:{calc_label:"ROI Rechner",calc_title:"Berechnen Sie Ihren Hotel-ROI",calc_subtitle:"Geben Sie Ihre Hotelzahlen ein und sehen Sie die echte Wirkung in Sekunden.",calc_tab1:"🍽️ Kitchen ROI",calc_tab2:"📈 RevPAR Uplift",calc_tab3:"🤝 Provider ROI",calc_cta:"Jetzt Demo anfragen →",ck_rooms:"Anzahl Zimmer",ck_guests:"Gäste pro Zimmer",ck_cost:"Food-Kosten pro Gast/Tag (€)",ck_waste:"Aktueller Food Waste (%)",ck_occ:"Auslastung (%)",ck_months:"Saisonmonate",ck_r1:"Jährl. Food-Kosten",ck_r2:"Aktueller Waste / Jahr",ck_r3:"Einsparung mit Smart Kitchen",ck_roi_sub:"vs. Softwarekosten",rv_rooms:"Anzahl Zimmer",rv_adr:"Aktueller ADR (€/Nacht)",rv_occ:"Aktuelle Auslastung (%)",rv_adr_inc:"ADR-Steigerung durch bessere Bewertungen (%)",rv_occ_inc:"Auslastungs-Steigerung durch Weiterempfehlungen (%)",rv_r1:"Aktueller RevPAR",rv_r2:"Neuer RevPAR mit Smart All-Inclusive",rv_r3:"Mehrumsatz / Jahr",rv_r4:"Mehrumsatz / Monat",pv_rooms:"Anzahl Zimmer",pv_occ:"Auslastung (%)",pv_months:"Saisonmonate",pv_rate:"App-Nutzungsrate – Gäste die via App buchen (%)",pv_spend:"Ø Ausgabe pro Buchung (€)",pv_commission:"Ø Provisionsrate (%)",pv_r1:"Tägliche App-Nutzer",pv_r2:"Umsatz / Monat",pv_r3:"Gesamt-Saisonumsatz",pv_r4:"Netto-Provision / Saison",hero_badge:"Für All-Inclusive Hotels",hero_h1:"Weniger Food Waste.<br><em>Mehr Umsatz.</em><br>Zufriedenere Gäste.",hero_p:"Die intelligente SaaS-Plattform für All-Inclusive Hotels. Reduzieren Sie Food Waste um bis zu 30%, steigern Sie den Umsatz und begeistern Sie Ihre Gäste.",hero_cta1:"Kostenlose Demo →",hero_cta2:"Mehr erfahren",card_label:"Jährliche Einsparung",card_sub:"weniger Food Waste – bei 500 Zimmern",ms1:"ROI für Hotels",ms2:"Cloud-Plattform",ms3:"Module",ms4:"Digital",stat1:"weniger Food Waste",stat2:"Ø ROI",stat3:"smarte Module",stat4:"integrierte Module",mod_label:"Unsere Module",mod_title:"Ein System. Drei Module. Maximale Effizienz.",mod_subtitle:"Jedes Modul einzeln buchbar – oder kombiniert für maximalen Effekt.",mod1_tag:"Kernmodul",mod1_p:"Intelligente Vorbestellungen und präzise Mengenplanung reduzieren Überproduktion und Food Waste erheblich.",mod1_saving:"Food Waste Reduktion",mod1_f1:"Digitale Vorbestellungen",mod1_f2:"Wochenmenü-Planung",mod1_f3:"Intelligente Einkaufslisten",mod1_f4:"Rezeptverwaltung",mod2_tag:"Einzeln / Zusatz",mod2_p:"Schluss mit Handtuch-Reservierungen. Digitale Liegenverteilung – fair und premium-buchbar.",mod2_saving:"Gästezufriedenheit",mod2_f1:"Digitale Warteschlange",mod2_f2:"QR-Code Check-in",mod2_f3:"Premium-Bereich Buchungen",mod2_f4:"Echtzeit-Belegung",mod3_tag:"Einzeln / Zusatz",mod3_p:"Externe Services digital integrieren und an jeder Buchung mitverdienen.",mod3_saving:"Neue Einnahmequellen",mod3_f1:"Anbieter-Management",mod3_f2:"Auto. Provisionen",mod3_f3:"Zentrale Buchungen",mod3_f4:"Bonuspunkte-System",mod_cta:"Demo anfragen",mod_combo:"Alle drei Module kombinieren für maximalen ROI – oder einfach mit einem starten.",mod_combo_cta:"Komplett-Paket anfragen →",roi_label:"Return on Investment",roi_title:"Die Zahlen sprechen für sich.",roi_example:"Beispiel – 500 Zimmer Hotel",roi_r1:"Gäste täglich",roi_r2:"Food Budget / Jahr",roi_r3:"Einsparung Food Waste",roi_h3:"Für jeden investierten Euro erhalten Sie bis zu 28€ zurück.",roi_p1:"Smart All-Inclusive zahlt sich bereits im ersten Monat aus.",roi_p2:"Dazu kommen neue Einnahmen durch Premium-Liegen und Provider-Provisionen.",roi_be:"Break-Even",roi_be_sub:"bereits ab dem ersten Monat nach Go-Live",contact_label:"Kontakt",contact_title:"Jetzt Demo anfragen",contact_sub:"Kostenlos und unverbindlich – wir melden uns innerhalb von 24 Stunden.",f_hotel:"Hotelname *",f_hotel_ph:"Grand Resort Hotel",f_contact:"Ansprechpartner",f_contact_ph:"Max Mustermann",f_email:"E-Mail *",f_rooms:"Anzahl Zimmer",f_interest:"Interesse an",f_select:"Modul auswählen...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Komplett-Paket",f_msg:"Nachricht",f_msg_ph:"Ich möchte mehr erfahren...",f_submit:"Demo anfragen →",f_success:"✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden."},
+  en:{calc_label:"ROI Calculator",calc_title:"Calculate Your Hotel's ROI",calc_subtitle:"Enter your hotel's numbers and see the real impact in seconds.",calc_tab1:"🍽️ Kitchen ROI",calc_tab2:"📈 RevPAR Uplift",calc_tab3:"🤝 Provider ROI",calc_cta:"Request Demo Now →",ck_rooms:"Number of Rooms",ck_guests:"Guests per Room",ck_cost:"Food Cost per Guest/Day (€)",ck_waste:"Current Food Waste (%)",ck_occ:"Occupancy (%)",ck_months:"Season Months",ck_r1:"Annual Food Cost",ck_r2:"Current Waste / Year",ck_r3:"Savings with Smart Kitchen",ck_roi_sub:"vs. software cost",rv_rooms:"Number of Rooms",rv_adr:"Current ADR (€/night)",rv_occ:"Current Occupancy (%)",rv_adr_inc:"ADR Increase through better reviews (%)",rv_occ_inc:"Occupancy Increase through referrals (%)",rv_r1:"Current RevPAR",rv_r2:"New RevPAR with Smart All-Inclusive",rv_r3:"Additional Revenue / Year",rv_r4:"Additional Revenue / Month",pv_rooms:"Number of Rooms",pv_occ:"Occupancy (%)",pv_months:"Season Months",pv_rate:"App Usage Rate – Guests booking via App (%)",pv_spend:"Avg. Spend per Booking (€)",pv_commission:"Avg. Commission Rate (%)",pv_r1:"Daily App Users",pv_r2:"Revenue / Month",pv_r3:"Total Season Revenue",pv_r4:"Net Commission Profit / Season",hero_badge:"For All-Inclusive Hotels",hero_h1:"Less Food Waste.<br><em>More Revenue.</em><br>Happier Guests.",hero_p:"The intelligent SaaS platform for all-inclusive hotels. Reduce food waste by up to 30%, increase revenue and delight your guests – all in one system.",hero_cta1:"Free Demo →",hero_cta2:"Learn more",card_label:"Annual Savings",card_sub:"less food waste – for 500 rooms",ms1:"ROI for Hotels",ms2:"Cloud platform",ms3:"Modules",ms4:"Digital",stat1:"less food waste",stat2:"avg. ROI",stat3:"smart modules",stat4:"integrated modules",mod_label:"Our Modules",mod_title:"One System. Three Modules. Maximum Efficiency.",mod_subtitle:"Each module can be booked individually or combined for maximum impact.",mod1_tag:"Core Module",mod1_p:"Smart pre-orders and precise quantity planning significantly reduce overproduction and food waste.",mod1_saving:"Food Waste Reduction",mod1_f1:"Digital pre-ordering",mod1_f2:"Weekly menu planning",mod1_f3:"Smart shopping lists",mod1_f4:"Recipe management",mod2_tag:"Standalone / Add-on",mod2_p:"No more towel reservations. Digital lounger management – fair, transparent and premium-bookable.",mod2_saving:"Guest Satisfaction",mod2_f1:"Digital queue system",mod2_f2:"QR-Code check-in",mod2_f3:"Premium area bookings",mod2_f4:"Real-time occupancy",mod3_tag:"Standalone / Add-on",mod3_p:"Integrate external services digitally and earn commission on every booking – without pushy vendors.",mod3_saving:"New Revenue Streams",mod3_f1:"Provider management",mod3_f2:"Auto commissions",mod3_f3:"Central bookings",mod3_f4:"Bonus points system",mod_cta:"Request Demo",mod_combo:"Combine all three modules for maximum ROI – or start with just one.",mod_combo_cta:"Get Full Package →",roi_label:"Return on Investment",roi_title:"The numbers speak for themselves.",roi_example:"Example – 500 room hotel",roi_r1:"Guests daily",roi_r2:"Food budget / year",roi_r3:"Food waste savings",roi_h3:"For every euro invested, you get up to €28 back.",roi_p1:"Smart All-Inclusive pays for itself in the very first month. No other hotel tool offers this return on investment.",roi_p2:"Add to that new revenue from premium loungers and provider commissions – money previously left on the table.",roi_be:"Break-Even",roi_be_sub:"from the very first month after go-live",contact_label:"Contact",contact_title:"Request a Demo Now",contact_sub:"Free and non-binding – we'll get back to you within 24 hours.",f_hotel:"Hotel name *",f_hotel_ph:"Grand Resort Hotel",f_contact:"Contact person",f_contact_ph:"John Smith",f_email:"Email *",f_rooms:"Number of rooms",f_interest:"Interested in",f_select:"Select module...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Complete Package",f_msg:"Message",f_msg_ph:"I'd like to learn more about Smart All-Inclusive...",f_submit:"Request Demo →",f_success:"✓ Thank you! We'll get back to you within 24 hours."},
+  tr:{calc_label:"ROI Hesaplayıcı",calc_title:"Otelinizin ROI'sini Hesaplayın",calc_subtitle:"Otel rakamlarınızı girin ve gerçek etkiyi saniyeler içinde görün.",calc_tab1:"🍽️ Mutfak ROI",calc_tab2:"📈 RevPAR Artışı",calc_tab3:"🤝 Sağlayıcı ROI",calc_cta:"Hemen Demo Talep Et →",ck_rooms:"Oda Sayısı",ck_guests:"Oda Başına Misafir",ck_cost:"Misafir Başına Yemek Maliyeti/Gün (€)",ck_waste:"Mevcut Gıda İsrafı (%)",ck_occ:"Doluluk (%)",ck_months:"Sezon Ayları",ck_r1:"Yıllık Yemek Maliyeti",ck_r2:"Mevcut İsraf / Yıl",ck_r3:"Smart Kitchen ile Tasarruf",ck_roi_sub:"yazılım maliyetine karşı",rv_rooms:"Oda Sayısı",rv_adr:"Mevcut ADR (€/gece)",rv_occ:"Mevcut Doluluk (%)",rv_adr_inc:"Daha İyi Yorumlarla ADR Artışı (%)",rv_occ_inc:"Tavsiyelerle Doluluk Artışı (%)",rv_r1:"Mevcut RevPAR",rv_r2:"Smart All-Inclusive ile Yeni RevPAR",rv_r3:"Ek Gelir / Yıl",rv_r4:"Ek Gelir / Ay",pv_rooms:"Oda Sayısı",pv_occ:"Doluluk (%)",pv_months:"Sezon Ayları",pv_rate:"Uygulama Kullanım Oranı (%)",pv_spend:"Rezervasyon Başına Ort. Harcama (€)",pv_commission:"Ort. Komisyon Oranı (%)",pv_r1:"Günlük Uygulama Kullanıcıları",pv_r2:"Gelir / Ay",pv_r3:"Toplam Sezon Geliri",pv_r4:"Net Komisyon Karı / Sezon",hero_badge:"Her Şey Dahil Oteller İçin",hero_h1:"Daha Az Gıda İsrafı.<br><em>Daha Fazla Gelir.</em><br>Daha Mutlu Misafirler.",hero_p:"Her şey dahil oteller için akıllı SaaS platformu. Gıda israfını %30'a kadar azaltın, geliri artırın ve misafirlerinizi memnun edin.",hero_cta1:"Ücretsiz Demo →",hero_cta2:"Daha fazla bilgi",card_label:"Yıllık Tasarruf",card_sub:"daha az gıda israfı – 500 oda için",ms1:"ROI Oteller için",ms2:"Bulut platformu",ms3:"Modül",ms4:"Dijital",stat1:"daha az gıda israfı",stat2:"ort. ROI",stat3:"akıllı modül",stat4:"entegre modül",mod_label:"Modüllerimiz",mod_title:"Bir Sistem. Üç Modül. Maksimum Verimlilik.",mod_subtitle:"Her modül ayrı ayrı veya birlikte kullanılabilir.",mod1_tag:"Temel Modül",mod1_p:"Akıllı ön siparişler ve hassas miktar planlaması aşırı üretimi ve gıda israfını önemli ölçüde azaltır.",mod1_saving:"Gıda İsrafı Azaltma",mod1_f1:"Dijital ön siparişler",mod1_f2:"Haftalık menü planlama",mod1_f3:"Akıllı alışveriş listeleri",mod1_f4:"Tarif yönetimi",mod2_tag:"Tekil / Ek Modül",mod2_p:"Havlu rezervasyonlarına son. Dijital şezlong yönetimi – adil ve premium rezervasyon.",mod2_saving:"Misafir Memnuniyeti",mod2_f1:"Dijital kuyruk sistemi",mod2_f2:"QR Kod check-in",mod2_f3:"Premium alan rezervasyonları",mod2_f4:"Gerçek zamanlı doluluk",mod3_tag:"Tekil / Ek Modül",mod3_p:"Harici hizmetleri dijital olarak entegre edin ve her rezervasyondan komisyon kazanın.",mod3_saving:"Yeni Gelir Kaynakları",mod3_f1:"Sağlayıcı yönetimi",mod3_f2:"Otomatik komisyonlar",mod3_f3:"Merkezi rezervasyonlar",mod3_f4:"Bonus puan sistemi",mod_cta:"Demo Talep Et",mod_combo:"Maksimum ROI için üç modülü birleştirin – ya da tek bir modülle başlayın.",mod_combo_cta:"Komple Paket Talep Et →",roi_label:"Yatırım Getirisi",roi_title:"Rakamlar kendisi için konuşuyor.",roi_example:"Örnek – 500 odalı otel",roi_r1:"Günlük misafir",roi_r2:"Yıllık yemek bütçesi",roi_r3:"Gıda israfı tasarrufu",roi_h3:"Yatırılan her Euro için size 28€'ya kadar geri kazanç sağlıyoruz.",roi_p1:"Smart All-Inclusive ilk ayda kendini amorti eder.",roi_p2:"Buna ek olarak premium şezlonglar ve sağlayıcı komisyonlarından yeni gelirler elde edersiniz.",roi_be:"Başabaş Noktası",roi_be_sub:"canlıya geçişin ilk ayından itibaren",contact_label:"İletişim",contact_title:"Hemen Demo Talep Edin",contact_sub:"Ücretsiz ve bağlayıcı değil – 24 saat içinde size geri döneceğiz.",f_hotel:"Otel adı *",f_hotel_ph:"Grand Resort Hotel",f_contact:"İletişim kişisi",f_contact_ph:"Ahmet Yılmaz",f_email:"E-posta *",f_rooms:"Oda sayısı",f_interest:"İlgilenilen modül",f_select:"Modül seçin...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Komple Paket",f_msg:"Mesaj",f_msg_ph:"Daha fazla bilgi almak istiyorum...",f_submit:"Demo Talep Et →",f_success:"✓ Teşekkürler! 24 saat içinde size geri döneceğiz."}
 };
 
-let lang='en';
+// CALCULATOR
+function switchCalc(name){
+  document.querySelectorAll('.calc-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('calc-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function fmt(n){ return '€'+Math.round(n).toLocaleString('de-DE'); }
+function fmtN(n){ return Math.round(n).toLocaleString('de-DE'); }
+
+function calcKitchen(){
+  const rooms = +document.getElementById('ck_rooms').value;
+  const guests = +document.getElementById('ck_guests').value;
+  const cost = +document.getElementById('ck_cost').value;
+  const waste = +document.getElementById('ck_waste').value / 100;
+  const occ = +document.getElementById('ck_occ').value / 100;
+  const months = +document.getElementById('ck_months').value;
+
+  document.getElementById('ck_rooms_val').textContent = rooms;
+  document.getElementById('ck_guests_val').textContent = guests;
+  document.getElementById('ck_cost_val').textContent = cost;
+  document.getElementById('ck_waste_val').textContent = Math.round(waste*100)+'%';
+  document.getElementById('ck_occ_val').textContent = Math.round(occ*100)+'%';
+  document.getElementById('ck_months_val').textContent = months;
+
+  const dailyGuests = rooms * guests * occ;
+  const totalCost = dailyGuests * cost * 30 * months;
+  const wasteCost = totalCost * waste;
+  const saving = wasteCost * 0.30; // 30% reduction
+  const softwareCost = rooms * 13 * 12; // Kitchen module annual
+  const roi = (saving / softwareCost) * 100;
+
+  document.getElementById('ck_total_cost').textContent = fmt(totalCost);
+  document.getElementById('ck_waste_cost').textContent = fmt(wasteCost);
+  document.getElementById('ck_saving').textContent = fmt(saving);
+  document.getElementById('ck_roi').textContent = Math.round(roi).toLocaleString('de-DE')+'%';
+}
+
+function calcRevpar(){
+  const rooms = +document.getElementById('rv_rooms').value;
+  const adr = +document.getElementById('rv_adr').value;
+  const occ = +document.getElementById('rv_occ').value / 100;
+  const adrInc = +document.getElementById('rv_adr_inc').value / 100;
+  const occInc = +document.getElementById('rv_occ_inc').value / 100;
+
+  document.getElementById('rv_rooms_val').textContent = rooms;
+  document.getElementById('rv_adr_val').textContent = '€'+adr;
+  document.getElementById('rv_occ_val').textContent = Math.round(occ*100)+'%';
+  document.getElementById('rv_adr_inc_val').textContent = Math.round(adrInc*100)+'%';
+  document.getElementById('rv_occ_inc_val').textContent = Math.round(occInc*100)+'%';
+
+  const revpar = adr * occ;
+  const newAdr = adr * (1 + adrInc);
+  const newOcc = Math.min(occ + occInc, 1);
+  const newRevpar = newAdr * newOcc;
+  const upliftPerRoom = (newRevpar - revpar) * 365;
+  const totalUplift = upliftPerRoom * rooms;
+
+  document.getElementById('rv_current').textContent = '€'+revpar.toFixed(2);
+  document.getElementById('rv_new').textContent = '€'+newRevpar.toFixed(2);
+  document.getElementById('rv_uplift').textContent = fmt(totalUplift);
+  document.getElementById('rv_monthly').textContent = fmt(totalUplift/12);
+}
+
+function calcProvider(){
+  const rooms = +document.getElementById('pv_rooms').value;
+  const occ = +document.getElementById('pv_occ').value / 100;
+  const months = +document.getElementById('pv_months').value;
+  const rate = +document.getElementById('pv_rate').value / 100;
+  const spend = +document.getElementById('pv_spend').value;
+  const commission = +document.getElementById('pv_commission').value / 100;
+
+  document.getElementById('pv_rooms_val').textContent = rooms;
+  document.getElementById('pv_occ_val').textContent = Math.round(occ*100)+'%';
+  document.getElementById('pv_months_val').textContent = months;
+  document.getElementById('pv_rate_val').textContent = Math.round(rate*100)+'%';
+  document.getElementById('pv_spend_val').textContent = '€'+spend;
+  document.getElementById('pv_commission_val').textContent = Math.round(commission*100)+'%';
+
+  const dailyUsers = rooms * occ * rate;
+  const monthlyRevenue = dailyUsers * spend * 30;
+  const seasonRevenue = monthlyRevenue * months;
+  const netCommission = seasonRevenue * commission;
+
+  document.getElementById('pv_users').textContent = fmtN(dailyUsers);
+  document.getElementById('pv_monthly').textContent = fmt(monthlyRevenue * commission);
+  document.getElementById('pv_season').textContent = fmt(seasonRevenue);
+  document.getElementById('pv_net').textContent = fmt(netCommission);
+}
+
+// Init calculators
+calcKitchen(); calcRevpar(); calcProvider();
+
+
 function setLang(l){
   lang=l;
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
