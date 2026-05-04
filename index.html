@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light only">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart All-Inclusive – Less Food Waste. More Revenue.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:       #3DBFB8;
+    --teal-light: #E0F5F4;
+    --teal-mid:   #B2E8E6;
+    --mint:       #A8D8C8;
+    --mint-light: #D6F0E8;
+    --sage:       #7BBFA8;
+    --cream:      #F7FDFB;
+    --white:      #FFFFFF;
+    --dark:       #1C3F38;
+    --text:       #2D5A50;
+    --muted:      #6A9E92;
+    --border:       rgba(61,191,184,0.18);
+    --coral:        #E8543A;
+    --coral-light:  #FDEEE9;
+    --coral-mid:    #F5B0A0;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; color-scheme: light only; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--dark); overflow-x:hidden; }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:18px 40px;
+    display:flex; justify-content:space-between; align-items:center;
+    background:rgba(247,253,251,0.96);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--dark); text-decoration:none; }
+  .nav-logo span { color:var(--teal); }
+  .nav-right { display:flex; align-items:center; gap:16px; }
+  .lang-switcher { display:flex; gap:4px; background:var(--teal-light); border-radius:100px; padding:4px; }
+  .lang-btn { background:none; border:none; padding:6px 12px; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.8rem; font-weight:500; cursor:pointer; color:var(--muted); transition:all .2s; }
+  .lang-btn.active { background:white; color:var(--dark); box-shadow:0 1px 6px rgba(61,191,184,0.2); }
+  .nav-cta { background:linear-gradient(135deg,var(--coral),#F07A5A); color:white; border:none; padding:10px 24px; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:500; cursor:pointer; text-decoration:none; transition:all .3s; box-shadow:0 4px 15px rgba(232,84,58,0.3); }
+  .nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(232,84,58,0.45); }
+
+  /* HERO */
+  .hero {
+    min-height:100vh;
+    display:grid; grid-template-columns:1fr 1fr;
+    align-items:center; padding:120px 40px 80px; gap:60px;
+    max-width:1200px; margin:0 auto;
+  }
+
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--coral-light); color:var(--coral);
+    padding:7px 18px; border-radius:100px;
+    font-size:0.78rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:24px; border:1px solid var(--coral-mid);
+  }
+  .hero-badge::before { content:''; width:7px; height:7px; background:var(--coral); border-radius:50%; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.6)} }
+
+  .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.4rem,4vw,3.8rem); font-weight:900; line-height:1.1; margin-bottom:24px; color:var(--dark); }
+  .hero h1 em { font-style:italic; color:var(--coral); }
+  .hero > div > p { font-size:1.05rem; line-height:1.75; color:var(--muted); margin-bottom:40px; font-weight:300; }
+  .hero-buttons { display:flex; gap:16px; flex-wrap:wrap; }
+
+  .btn-primary { background:linear-gradient(135deg,var(--coral),#F07A5A); color:white; padding:14px 32px; border-radius:100px; font-size:1rem; font-weight:500; text-decoration:none; transition:all .3s; border:none; cursor:pointer; display:inline-block; box-shadow:0 4px 20px rgba(232,84,58,0.35); }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(232,84,58,0.5); }
+  .btn-secondary { background:transparent; color:var(--dark); padding:14px 32px; border-radius:100px; font-size:1rem; font-weight:500; text-decoration:none; border:1.5px solid var(--teal-mid); transition:all .3s; cursor:pointer; }
+  .btn-secondary:hover { border-color:var(--teal); color:var(--teal); transform:translateY(-2px); }
+
+  /* HERO CARD – now light! */
+  .hero-card-main {
+    background:white;
+    border-radius:28px; padding:44px;
+    position:relative; overflow:hidden;
+    box-shadow:0 20px 60px rgba(61,191,184,0.15);
+    border:1.5px solid var(--teal-mid);
+  }
+  .hero-card-main::before { content:''; position:absolute; top:-80px; right:-80px; width:250px; height:250px; background:var(--teal-light); border-radius:50%; }
+  .hero-card-main::after { content:''; position:absolute; bottom:-60px; left:-60px; width:200px; height:200px; background:var(--mint-light); border-radius:50%; }
+  .hero-card-main h3 { font-family:'Playfair Display',serif; font-size:0.95rem; margin-bottom:6px; color:var(--muted); font-weight:400; position:relative; z-index:1; }
+  .big-number { font-family:'Playfair Display',serif; font-size:5.5rem; font-weight:900; background:linear-gradient(135deg,var(--coral),#F07A5A); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1; margin-bottom:6px; position:relative; z-index:1; }
+  .hero-card-main > p { color:var(--muted); font-size:0.85rem; margin-bottom:32px; position:relative; z-index:1; }
+  .mini-stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; position:relative; z-index:1; }
+  .mini-stat { background:var(--teal-light); border:1px solid var(--teal-mid); border-radius:16px; padding:16px; }
+  .mini-stat .num { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700; background:linear-gradient(135deg,var(--teal),var(--sage)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .mini-stat .lbl { font-size:0.7rem; color:var(--muted); margin-top:2px; }
+
+  /* STATS BAR – light! */
+  .stats-bar {
+    background:linear-gradient(135deg,var(--teal-light),var(--mint-light));
+    padding:44px 40px;
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:40px; text-align:center;
+    border-top:1px solid var(--teal-mid);
+    border-bottom:1px solid var(--teal-mid);
+  }
+  .stat-item .number { font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:900; background:linear-gradient(135deg,var(--coral),#F07A5A); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .stat-item .text { color:var(--muted); font-size:0.85rem; margin-top:6px; }
+
+  /* MODULES */
+  .modules { padding:100px 40px; max-width:1200px; margin:0 auto; }
+  .section-label { font-size:0.78rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:14px; }
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:900; line-height:1.2; margin-bottom:56px; max-width:600px; color:var(--dark); }
+
+  .modules-subtitle { color:var(--muted); font-size:1rem; margin-top:-40px; margin-bottom:48px; }
+  .modules-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .module-card { border:1.5px solid var(--border); border-radius:24px; padding:36px; transition:all .4s; background:white; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; }
+  .module-card.module-featured { border-color:var(--coral-mid); background:linear-gradient(180deg,var(--coral-light) 0%,white 40%); }
+  .module-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--teal),var(--mint)); opacity:0; transition:opacity .3s; }
+  .module-card.module-featured::before { opacity:1; background:linear-gradient(90deg,var(--coral),#F07A5A); }
+  .module-card:hover::before { opacity:1; }
+  .module-card:hover { border-color:var(--teal); transform:translateY(-8px); box-shadow:0 24px 60px rgba(61,191,184,0.15); }
+  .module-card.module-featured:hover { border-color:var(--coral); box-shadow:0 24px 60px rgba(232,84,58,0.15); }
+  .module-card-top { margin-bottom:20px; }
+  .module-icon { font-size:2.8rem; margin-bottom:20px; display:block; }
+  .module-tag { font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; background:var(--teal-light); display:inline-block; padding:3px 10px; border-radius:100px; }
+  .module-card.module-featured .module-tag { color:var(--coral); background:var(--coral-light); }
+  .module-card h3 { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; margin-bottom:12px; color:var(--dark); }
+  .module-card p { color:var(--muted); font-size:0.9rem; line-height:1.65; margin-bottom:0; }
+  .module-features { list-style:none; margin:16px 0 24px; flex:1; }
+  .module-features li { font-size:0.85rem; color:var(--text); padding:6px 0; border-bottom:1px solid var(--teal-light); display:flex; align-items:center; gap:8px; }
+  .module-features li::before { content:'✓'; color:var(--teal); font-weight:700; font-size:0.75rem; flex-shrink:0; }
+  .module-card.module-featured .module-features li::before { color:var(--coral); }
+  .module-card.module-featured .module-features li { border-bottom-color:var(--coral-light); }
+  .module-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
+  .module-saving { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; background:linear-gradient(135deg,var(--coral),#F07A5A); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .module-saving-label { font-size:0.78rem; color:var(--muted); margin-top:2px; }
+  .module-btn { background:linear-gradient(135deg,var(--teal),var(--sage)); color:white; padding:10px 20px; border-radius:100px; font-size:0.85rem; font-weight:500; text-decoration:none; transition:all .3s; white-space:nowrap; box-shadow:0 4px 12px rgba(61,191,184,0.3); }
+  .module-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(61,191,184,0.4); }
+  .module-card.module-featured .module-btn { background:linear-gradient(135deg,var(--coral),#F07A5A); box-shadow:0 4px 12px rgba(232,84,58,0.3); }
+  .module-card.module-featured .module-btn:hover { box-shadow:0 8px 20px rgba(232,84,58,0.4); }
+
+  .modules-combo { margin-top:48px; background:linear-gradient(135deg,var(--teal-light),var(--mint-light)); border:1.5px solid var(--teal-mid); border-radius:24px; padding:32px 40px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  .modules-combo-icon { font-size:2rem; }
+  .modules-combo p { flex:1; color:var(--text); font-size:1rem; line-height:1.5; min-width:200px; }
+
+  /* ROI */
+  .roi { padding:100px 40px; background:linear-gradient(180deg,var(--teal-light),var(--cream)); }
+  .roi-inner { max-width:1200px; margin:0 auto; }
+  .roi-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; margin-top:56px; }
+
+  /* ROI card – light! */
+  .roi-visual { background:white; border-radius:28px; padding:44px; box-shadow:0 20px 60px rgba(61,191,184,0.12); border:1.5px solid var(--teal-mid); position:relative; overflow:hidden; }
+  .roi-visual::before { content:''; position:absolute; bottom:-60px; right:-60px; width:200px; height:200px; background:var(--teal-light); border-radius:50%; }
+  .roi-row { display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--teal-light); position:relative; z-index:1; }
+  .roi-row:last-child { border:none; }
+  .roi-label { color:var(--muted); font-size:0.88rem; }
+  .roi-value { font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700; color:var(--dark); }
+  .roi-value.highlight { background:linear-gradient(135deg,var(--coral),#F07A5A); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+  .roi-text h3 { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700; margin-bottom:18px; color:var(--dark); }
+  .roi-text p { color:var(--muted); line-height:1.7; margin-bottom:14px; font-size:0.95rem; }
+  .roi-highlight-box { background:var(--coral-light); border:1.5px solid var(--coral-mid); border-radius:18px; padding:22px 26px; margin-top:28px; }
+  .roi-highlight-box .big { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; background:linear-gradient(135deg,var(--coral),#F07A5A); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .roi-highlight-box .small { font-size:0.82rem; color:var(--muted); margin-top:4px; }
+
+  /* CONTACT – light with teal accents */
+  .contact { background:linear-gradient(135deg,var(--mint-light),var(--teal-light)); padding:100px 40px; position:relative; overflow:hidden; border-top:1px solid var(--teal-mid); }
+  .contact::before { content:''; position:absolute; top:-150px; right:-150px; width:500px; height:500px; background:rgba(61,191,184,0.1); border-radius:50%; }
+  .contact-inner { max-width:600px; margin:0 auto; position:relative; z-index:1; text-align:center; }
+  .contact .section-label { color:var(--teal); }
+  .contact .section-title { color:var(--dark); margin:0 auto 12px; }
+  .contact-subtitle { color:var(--muted); margin-bottom:44px; font-size:1rem; }
+  .contact-form { text-align:left; }
+  .form-group { margin-bottom:18px; }
+  .form-group label { display:block; font-size:0.83rem; color:var(--text); margin-bottom:7px; font-weight:500; }
+  .form-group input,.form-group textarea,.form-group select { width:100%; background:white; border:1.5px solid var(--teal-mid); border-radius:14px; padding:14px 18px; color:var(--dark); font-family:'DM Sans',sans-serif; font-size:0.95rem; transition:all .3s; outline:none; }
+  .form-group select option { background:white; color:var(--dark); }
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(61,191,184,0.1); }
+  .form-group input::placeholder,.form-group textarea::placeholder { color:var(--muted); }
+  .form-group textarea { resize:vertical; min-height:110px; }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .form-submit { width:100%; background:linear-gradient(135deg,var(--coral),#F07A5A); color:white; border:none; padding:16px; border-radius:14px; font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:600; cursor:pointer; transition:all .3s; margin-top:6px; box-shadow:0 4px 20px rgba(232,84,58,0.35); }
+  .form-submit:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(232,84,58,0.5); }
+  .success-msg { display:none; background:white; border:1.5px solid var(--teal-mid); border-radius:14px; padding:18px; text-align:center; color:var(--teal); margin-top:14px; font-size:0.95rem; font-weight:500; }
+
+  /* FOOTER */
+  footer { background:var(--dark); padding:30px 40px; display:flex; justify-content:space-between; align-items:center; color:rgba(255,255,255,0.4); font-size:0.82rem; }
+  .footer-logo { font-family:'Playfair Display',serif; font-weight:700; color:white; font-size:1.1rem; }
+  .footer-logo span { color:var(--teal); }
+
+  .fade-up { opacity:0; transform:translateY(28px); transition:all .7s ease; }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+
+  @media(max-width:768px){
+    nav{padding:14px 16px;}
+    .nav-logo{font-size:1rem;}
+    .lang-btn{padding:5px 9px;font-size:0.75rem;}
+    .nav-cta{padding:8px 16px;font-size:0.82rem;}
+    .hero{grid-template-columns:1fr;padding:90px 20px 50px;}
+    .hero-visual{display:none;}
+    .stats-bar{grid-template-columns:repeat(2,1fr);padding:32px 20px;gap:20px;}
+    .modules{padding:60px 20px;}
+    .modules-grid{grid-template-columns:1fr;}
+    .roi{padding:60px 20px;}
+    .roi-grid{grid-template-columns:1fr;}
+    .contact{padding:60px 20px;}
+    .form-grid{grid-template-columns:1fr;}
+    footer{flex-direction:column;gap:10px;text-align:center;padding:20px;}
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('eQH4APzKzvrnvxIUa');</script>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Smart <span>All-Inclusive</span></a>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLang('de')">DE</button>
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('tr')">TR</button>
+    </div>
+    <a href="#contact" class="nav-cta" data-i18n="nav_cta">Request Demo</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="hero-badge" data-i18n="hero_badge">For All-Inclusive Hotels</div>
+    <h1 data-i18n-html="hero_h1">Less Food Waste.<br><em>More Revenue.</em><br>Happier Guests.</h1>
+    <p data-i18n="hero_p">The intelligent SaaS platform for all-inclusive hotels. Reduce food waste by up to 30%, increase revenue and delight your guests – all in one system.</p>
+    <div class="hero-buttons">
+      <a href="#contact" class="btn-primary" data-i18n="hero_cta1">Free Demo →</a>
+      <a href="#module" class="btn-secondary" data-i18n="hero_cta2">Learn more</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-main">
+      <h3 data-i18n="card_label">Annual Savings</h3>
+      <div class="big-number">30%</div>
+      <p data-i18n="card_sub">less food waste – for 500 rooms</p>
+      <div class="mini-stats">
+        <div class="mini-stat"><div class="num">2,000%</div><div class="lbl" data-i18n="ms1">ROI for Hotels</div></div>
+        <div class="mini-stat"><div class="num">SaaS</div><div class="lbl" data-i18n="ms2">Cloud-based platform</div></div>
+        <div class="mini-stat"><div class="num">3</div><div class="lbl" data-i18n="ms3">Modules</div></div>
+        <div class="mini-stat"><div class="num">24/7</div><div class="lbl" data-i18n="ms4">Digital</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="number">30%</div><div class="text" data-i18n="stat1">less food waste</div></div>
+  <div class="stat-item"><div class="number">2,000%</div><div class="text" data-i18n="stat2">avg. ROI</div></div>
+  <div class="stat-item"><div class="number">3</div><div class="text" data-i18n="stat3">smart modules</div></div>
+  <div class="stat-item"><div class="number">3</div><div class="text" data-i18n="stat4">integrated modules</div></div>
+</div>
+
+<section class="modules fade-up" id="module">
+  <div class="section-label" data-i18n="mod_label">Our Modules</div>
+  <h2 class="section-title" data-i18n="mod_title">One System. Three Modules. Maximum Efficiency.</h2>
+  <p class="modules-subtitle" data-i18n="mod_subtitle">Each module can be booked individually or combined for maximum impact.</p>
+  <div class="modules-grid">
+
+    <!-- Kitchen -->
+    <div class="module-card module-featured">
+      <div class="module-card-top">
+        <span class="module-icon">🍽️</span>
+        <div class="module-tag" data-i18n="mod1_tag">Core Module</div>
+        <h3>Smart Kitchen</h3>
+        <p data-i18n="mod1_p">Smart pre-orders and precise quantity planning significantly reduce overproduction and food waste.</p>
+      </div>
+      <ul class="module-features">
+        <li data-i18n="mod1_f1">Digital pre-ordering</li>
+        <li data-i18n="mod1_f2">Weekly menu planning</li>
+        <li data-i18n="mod1_f3">Smart shopping lists</li>
+        <li data-i18n="mod1_f4">Recipe management</li>
+      </ul>
+      <div class="module-bottom">
+        <div>
+          <div class="module-saving">−30%</div>
+          <div class="module-saving-label" data-i18n="mod1_saving">Food Waste Reduction</div>
+        </div>
+        <a href="#contact" class="module-btn" data-i18n="mod_cta">Request Demo</a>
+      </div>
+    </div>
+
+    <!-- Lounger -->
+    <div class="module-card">
+      <div class="module-card-top">
+        <span class="module-icon">🏖️</span>
+        <div class="module-tag" data-i18n="mod2_tag">Standalone / Add-on</div>
+        <h3>Smart Lounger</h3>
+        <p data-i18n="mod2_p">No more towel reservations. Digital lounger management – fair, transparent and premium-bookable.</p>
+      </div>
+      <ul class="module-features">
+        <li data-i18n="mod2_f1">Digital queue system</li>
+        <li data-i18n="mod2_f2">QR-Code check-in</li>
+        <li data-i18n="mod2_f3">Premium area bookings</li>
+        <li data-i18n="mod2_f4">Real-time occupancy</li>
+      </ul>
+      <div class="module-bottom">
+        <div>
+          <div class="module-saving">+★★★★★</div>
+          <div class="module-saving-label" data-i18n="mod2_saving">Guest Satisfaction</div>
+        </div>
+        <a href="#contact" class="module-btn" data-i18n="mod_cta">Request Demo</a>
+      </div>
+    </div>
+
+    <!-- Provider -->
+    <div class="module-card">
+      <div class="module-card-top">
+        <span class="module-icon">🤝</span>
+        <div class="module-tag" data-i18n="mod3_tag">Standalone / Add-on</div>
+        <h3>Smart Provider</h3>
+        <p data-i18n="mod3_p">Integrate external services digitally and earn commission on every booking – without pushy vendors.</p>
+      </div>
+      <ul class="module-features">
+        <li data-i18n="mod3_f1">Provider management</li>
+        <li data-i18n="mod3_f2">Auto commissions</li>
+        <li data-i18n="mod3_f3">Central bookings</li>
+        <li data-i18n="mod3_f4">Bonus points system</li>
+      </ul>
+      <div class="module-bottom">
+        <div>
+          <div class="module-saving">+15%</div>
+          <div class="module-saving-label" data-i18n="mod3_saving">New Revenue Streams</div>
+        </div>
+        <a href="#contact" class="module-btn" data-i18n="mod_cta">Request Demo</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Combo hint -->
+  <div class="modules-combo fade-up">
+    <span class="modules-combo-icon">✨</span>
+    <p data-i18n="mod_combo">Combine all three modules for maximum ROI – or start with just one.</p>
+    <a href="#contact" class="btn-primary" data-i18n="mod_combo_cta">Get Full Package →</a>
+  </div>
+
+</section>
+
+<section class="roi fade-up">
+  <div class="roi-inner">
+    <div class="section-label" data-i18n="roi_label">Return on Investment</div>
+    <h2 class="section-title" data-i18n="roi_title">The numbers speak for themselves.</h2>
+    <div class="roi-grid">
+      <div class="roi-visual">
+        <div style="font-size:0.75rem;color:var(--muted);margin-bottom:22px;text-transform:uppercase;letter-spacing:0.12em;" data-i18n="roi_example">Example – 500 room hotel</div>
+        <div class="roi-row"><span class="roi-label" data-i18n="roi_r1">Guests daily</span><span class="roi-value">~825</span></div>
+        <div class="roi-row"><span class="roi-label" data-i18n="roi_r2">Food budget / year</span><span class="roi-value">~€7.5M</span></div>
+        <div class="roi-row"><span class="roi-label" data-i18n="roi_r3">Food waste savings</span><span class="roi-value highlight">~€2.25M</span></div>
+        <div class="roi-row"><span class="roi-label">ROI</span><span class="roi-value highlight">~2,800%</span></div>
+      </div>
+      <div class="roi-text">
+        <h3 data-i18n="roi_h3">For every euro invested, you get up to €28 back.</h3>
+        <p data-i18n="roi_p1">Smart All-Inclusive pays for itself in the very first month. No other hotel tool offers this return on investment.</p>
+        <p data-i18n="roi_p2">Add to that new revenue from premium loungers and provider commissions – money previously left on the table.</p>
+        <div class="roi-highlight-box">
+          <div class="big" data-i18n="roi_be">Break-Even</div>
+          <div class="small" data-i18n="roi_be_sub">from the very first month after go-live</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="section-label" data-i18n="contact_label">Contact</div>
+    <h2 class="section-title" data-i18n="contact_title">Request a Demo Now</h2>
+    <p class="contact-subtitle" data-i18n="contact_sub">Free and non-binding – we'll get back to you within 24 hours.</p>
+    <form class="contact-form" id="contactForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-i18n="f_hotel">Hotel name *</label>
+          <input type="text" data-i18n-ph="f_hotel_ph" placeholder="Grand Resort Hotel" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="f_contact">Contact person</label>
+          <input type="text" data-i18n-ph="f_contact_ph" placeholder="John Smith">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-i18n="f_email">Email *</label>
+          <input type="email" placeholder="info@hotel.com" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="f_rooms">Number of rooms</label>
+          <input type="number" placeholder="300">
+        </div>
+      </div>
+      <div class="form-group">
+        <label data-i18n="f_interest">Interested in</label>
+        <select>
+          <option value="" data-i18n="f_select">Select module...</option>
+          <option data-i18n="f_opt1">Smart Kitchen</option>
+          <option data-i18n="f_opt2">Smart Lounger</option>
+          <option data-i18n="f_opt3">Smart Provider</option>
+          <option data-i18n="f_opt4">Complete Package</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label data-i18n="f_msg">Message</label>
+        <textarea data-i18n-ph="f_msg_ph" placeholder="I'd like to learn more..."></textarea>
+      </div>
+      <button type="submit" class="form-submit" data-i18n="f_submit">Request Demo →</button>
+      <div class="success-msg" id="successMsg"></div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Smart <span>All-Inclusive</span></div>
+  <div>info@smartallinclusive.com</div>
+  <div>© 2025 Smart All-Inclusive</div>
+</footer>
+
+<script>
+const T={
+  de:{nav_cta:"Demo anfragen",hero_badge:"Für All-Inclusive Hotels",hero_h1:"Weniger Food Waste.<br><em>Mehr Umsatz.</em><br>Zufriedenere Gäste.",hero_p:"Die intelligente SaaS-Plattform für All-Inclusive Hotels. Reduzieren Sie Food Waste um bis zu 30%, steigern Sie den Umsatz und begeistern Sie Ihre Gäste.",hero_cta1:"Kostenlose Demo →",hero_cta2:"Mehr erfahren",card_label:"Jährliche Einsparung",card_sub:"weniger Food Waste – bei 500 Zimmern",ms1:"ROI für Hotels",ms2:"Cloud-Plattform",ms3:"Module",ms4:"Digital",stat1:"weniger Food Waste",stat2:"Ø ROI",stat3:"smarte Module",stat4:"integrierte Module",mod_label:"Unsere Module",mod_title:"Ein System. Drei Module. Maximale Effizienz.",mod_subtitle:"Jedes Modul einzeln buchbar – oder kombiniert für maximalen Effekt.",mod1_tag:"Kernmodul",mod1_p:"Intelligente Vorbestellungen und präzise Mengenplanung reduzieren Überproduktion und Food Waste erheblich.",mod1_saving:"Food Waste Reduktion",mod1_f1:"Digitale Vorbestellungen",mod1_f2:"Wochenmenü-Planung",mod1_f3:"Intelligente Einkaufslisten",mod1_f4:"Rezeptverwaltung",mod2_tag:"Einzeln / Zusatz",mod2_p:"Schluss mit Handtuch-Reservierungen. Digitale Liegenverteilung – fair und premium-buchbar.",mod2_saving:"Gästezufriedenheit",mod2_f1:"Digitale Warteschlange",mod2_f2:"QR-Code Check-in",mod2_f3:"Premium-Bereich Buchungen",mod2_f4:"Echtzeit-Belegung",mod3_tag:"Einzeln / Zusatz",mod3_p:"Externe Services digital integrieren und an jeder Buchung mitverdienen.",mod3_saving:"Neue Einnahmequellen",mod3_f1:"Anbieter-Management",mod3_f2:"Auto. Provisionen",mod3_f3:"Zentrale Buchungen",mod3_f4:"Bonuspunkte-System",mod_cta:"Demo anfragen",mod_combo:"Alle drei Module kombinieren für maximalen ROI – oder einfach mit einem starten.",mod_combo_cta:"Komplett-Paket anfragen →",roi_label:"Return on Investment",roi_title:"Die Zahlen sprechen für sich.",roi_example:"Beispiel – 500 Zimmer Hotel",roi_r1:"Gäste täglich",roi_r2:"Food Budget / Jahr",roi_r3:"Einsparung Food Waste",roi_h3:"Für jeden investierten Euro erhalten Sie bis zu 28€ zurück.",roi_p1:"Smart All-Inclusive zahlt sich bereits im ersten Monat aus.",roi_p2:"Dazu kommen neue Einnahmen durch Premium-Liegen und Provider-Provisionen.",roi_be:"Break-Even",roi_be_sub:"bereits ab dem ersten Monat nach Go-Live",contact_label:"Kontakt",contact_title:"Jetzt Demo anfragen",contact_sub:"Kostenlos und unverbindlich – wir melden uns innerhalb von 24 Stunden.",f_hotel:"Hotelname *",f_hotel_ph:"Grand Resort Hotel",f_contact:"Ansprechpartner",f_contact_ph:"Max Mustermann",f_email:"E-Mail *",f_rooms:"Anzahl Zimmer",f_interest:"Interesse an",f_select:"Modul auswählen...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Komplett-Paket",f_msg:"Nachricht",f_msg_ph:"Ich möchte mehr erfahren...",f_submit:"Demo anfragen →",f_success:"✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden."},
+  en:{nav_cta:"Request Demo",hero_badge:"For All-Inclusive Hotels",hero_h1:"Less Food Waste.<br><em>More Revenue.</em><br>Happier Guests.",hero_p:"The intelligent SaaS platform for all-inclusive hotels. Reduce food waste by up to 30%, increase revenue and delight your guests – all in one system.",hero_cta1:"Free Demo →",hero_cta2:"Learn more",card_label:"Annual Savings",card_sub:"less food waste – for 500 rooms",ms1:"ROI for Hotels",ms2:"Cloud platform",ms3:"Modules",ms4:"Digital",stat1:"less food waste",stat2:"avg. ROI",stat3:"smart modules",stat4:"integrated modules",mod_label:"Our Modules",mod_title:"One System. Three Modules. Maximum Efficiency.",mod_subtitle:"Each module can be booked individually or combined for maximum impact.",mod1_tag:"Core Module",mod1_p:"Smart pre-orders and precise quantity planning significantly reduce overproduction and food waste.",mod1_saving:"Food Waste Reduction",mod1_f1:"Digital pre-ordering",mod1_f2:"Weekly menu planning",mod1_f3:"Smart shopping lists",mod1_f4:"Recipe management",mod2_tag:"Standalone / Add-on",mod2_p:"No more towel reservations. Digital lounger management – fair, transparent and premium-bookable.",mod2_saving:"Guest Satisfaction",mod2_f1:"Digital queue system",mod2_f2:"QR-Code check-in",mod2_f3:"Premium area bookings",mod2_f4:"Real-time occupancy",mod3_tag:"Standalone / Add-on",mod3_p:"Integrate external services digitally and earn commission on every booking – without pushy vendors.",mod3_saving:"New Revenue Streams",mod3_f1:"Provider management",mod3_f2:"Auto commissions",mod3_f3:"Central bookings",mod3_f4:"Bonus points system",mod_cta:"Request Demo",mod_combo:"Combine all three modules for maximum ROI – or start with just one.",mod_combo_cta:"Get Full Package →",roi_label:"Return on Investment",roi_title:"The numbers speak for themselves.",roi_example:"Example – 500 room hotel",roi_r1:"Guests daily",roi_r2:"Food budget / year",roi_r3:"Food waste savings",roi_h3:"For every euro invested, you get up to €28 back.",roi_p1:"Smart All-Inclusive pays for itself in the very first month. No other hotel tool offers this return on investment.",roi_p2:"Add to that new revenue from premium loungers and provider commissions – money previously left on the table.",roi_be:"Break-Even",roi_be_sub:"from the very first month after go-live",contact_label:"Contact",contact_title:"Request a Demo Now",contact_sub:"Free and non-binding – we'll get back to you within 24 hours.",f_hotel:"Hotel name *",f_hotel_ph:"Grand Resort Hotel",f_contact:"Contact person",f_contact_ph:"John Smith",f_email:"Email *",f_rooms:"Number of rooms",f_interest:"Interested in",f_select:"Select module...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Complete Package",f_msg:"Message",f_msg_ph:"I'd like to learn more about Smart All-Inclusive...",f_submit:"Request Demo →",f_success:"✓ Thank you! We'll get back to you within 24 hours."},
+  tr:{nav_cta:"Demo Talep Et",hero_badge:"Her Şey Dahil Oteller İçin",hero_h1:"Daha Az Gıda İsrafı.<br><em>Daha Fazla Gelir.</em><br>Daha Mutlu Misafirler.",hero_p:"Her şey dahil oteller için akıllı SaaS platformu. Gıda israfını %30'a kadar azaltın, geliri artırın ve misafirlerinizi memnun edin.",hero_cta1:"Ücretsiz Demo →",hero_cta2:"Daha fazla bilgi",card_label:"Yıllık Tasarruf",card_sub:"daha az gıda israfı – 500 oda için",ms1:"ROI Oteller için",ms2:"Bulut platformu",ms3:"Modül",ms4:"Dijital",stat1:"daha az gıda israfı",stat2:"ort. ROI",stat3:"akıllı modül",stat4:"entegre modül",mod_label:"Modüllerimiz",mod_title:"Bir Sistem. Üç Modül. Maksimum Verimlilik.",mod_subtitle:"Her modül ayrı ayrı veya birlikte kullanılabilir.",mod1_tag:"Temel Modül",mod1_p:"Akıllı ön siparişler ve hassas miktar planlaması aşırı üretimi ve gıda israfını önemli ölçüde azaltır.",mod1_saving:"Gıda İsrafı Azaltma",mod1_f1:"Dijital ön siparişler",mod1_f2:"Haftalık menü planlama",mod1_f3:"Akıllı alışveriş listeleri",mod1_f4:"Tarif yönetimi",mod2_tag:"Tekil / Ek Modül",mod2_p:"Havlu rezervasyonlarına son. Dijital şezlong yönetimi – adil ve premium rezervasyon.",mod2_saving:"Misafir Memnuniyeti",mod2_f1:"Dijital kuyruk sistemi",mod2_f2:"QR Kod check-in",mod2_f3:"Premium alan rezervasyonları",mod2_f4:"Gerçek zamanlı doluluk",mod3_tag:"Tekil / Ek Modül",mod3_p:"Harici hizmetleri dijital olarak entegre edin ve her rezervasyondan komisyon kazanın.",mod3_saving:"Yeni Gelir Kaynakları",mod3_f1:"Sağlayıcı yönetimi",mod3_f2:"Otomatik komisyonlar",mod3_f3:"Merkezi rezervasyonlar",mod3_f4:"Bonus puan sistemi",mod_cta:"Demo Talep Et",mod_combo:"Maksimum ROI için üç modülü birleştirin – ya da tek bir modülle başlayın.",mod_combo_cta:"Komple Paket Talep Et →",roi_label:"Yatırım Getirisi",roi_title:"Rakamlar kendisi için konuşuyor.",roi_example:"Örnek – 500 odalı otel",roi_r1:"Günlük misafir",roi_r2:"Yıllık yemek bütçesi",roi_r3:"Gıda israfı tasarrufu",roi_h3:"Yatırılan her Euro için size 28€'ya kadar geri kazanç sağlıyoruz.",roi_p1:"Smart All-Inclusive ilk ayda kendini amorti eder.",roi_p2:"Buna ek olarak premium şezlonglar ve sağlayıcı komisyonlarından yeni gelirler elde edersiniz.",roi_be:"Başabaş Noktası",roi_be_sub:"canlıya geçişin ilk ayından itibaren",contact_label:"İletişim",contact_title:"Hemen Demo Talep Edin",contact_sub:"Ücretsiz ve bağlayıcı değil – 24 saat içinde size geri döneceğiz.",f_hotel:"Otel adı *",f_hotel_ph:"Grand Resort Hotel",f_contact:"İletişim kişisi",f_contact_ph:"Ahmet Yılmaz",f_email:"E-posta *",f_rooms:"Oda sayısı",f_interest:"İlgilenilen modül",f_select:"Modül seçin...",f_opt1:"Smart Kitchen",f_opt2:"Smart Lounger",f_opt3:"Smart Provider",f_opt4:"Komple Paket",f_msg:"Mesaj",f_msg_ph:"Daha fazla bilgi almak istiyorum...",f_submit:"Demo Talep Et →",f_success:"✓ Teşekkürler! 24 saat içinde size geri döneceğiz."}
+};
+
+let lang='en';
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`).classList.add('active');
+  document.documentElement.lang=l;
+  const t=T[l];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k]!==undefined)el.textContent=t[k];});
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{const k=el.getAttribute('data-i18n-html');if(t[k]!==undefined)el.innerHTML=t[k];});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph');if(t[k]!==undefined)el.placeholder=t[k];});
+}
+
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+document.getElementById('contactForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const btn=this.querySelector('.form-submit');
+  const inputs=this.querySelectorAll('input,textarea,select');
+  btn.textContent='...'; btn.disabled=true;
+
+  const params={
+    hotel_name: inputs[0].value,
+    contact_name: inputs[1].value,
+    email: inputs[2].value,
+    rooms: inputs[3].value || 'Nicht angegeben',
+    module: inputs[4].value || 'Nicht angegeben',
+    message: inputs[5].value || 'Keine Nachricht',
+  };
+
+  emailjs.send('service_zvnhflf','template_umjky3h', params)
+    .then(()=>{
+      const msg=document.getElementById('successMsg');
+      msg.textContent=T[lang].f_success;
+      msg.style.display='block';
+      btn.textContent='✓';
+      this.reset();
+    })
+    .catch((err)=>{
+      console.error('EmailJS error:',err);
+      btn.textContent=T[lang].f_submit;
+      btn.disabled=false;
+      alert('Error sending email. Please try again.');
+    });
+});
+</script>
+</body>
+</html>
