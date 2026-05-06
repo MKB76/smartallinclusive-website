@@ -786,7 +786,7 @@ function calcKitchen(){
   const co2Saved       = dailySavings / cost * 0.5 * 2.5 * 365 / 1000; // tonnes
 
   document.getElementById('ck_daily_guests').textContent = fmtN(dailyGuests);
-  document.getElementById('ck_total_cost').textContent   = fmt(yearlyCost);
+  const ckTC = document.getElementById('ck_total_cost'); if(ckTC) ckTC.textContent = fmt(yearlyCost);
   document.getElementById('ck_waste_cost').textContent   = fmt(yearlyWaste);
   document.getElementById('ck_saving').textContent       = fmt(yearlySavings);
   document.getElementById('ck_saving_day').textContent   = fmt(dailySavings)+' / day';
